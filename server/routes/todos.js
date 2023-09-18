@@ -36,7 +36,22 @@ router.put('/:id', async (req, res) => {
         res.json({ message: 'Todo Updated Succesfully', todo: updatedTodo });
     } catch (err) {
         res.status(400).json({ message: 'Unable To Update Todo' });
-    }
-})
+    };
+});
+
+router.delete('/:id', async (req, res) => {
+    try {
+        const deletedTodo = await Todo.findByIdAndDelete(req.params.id);
+
+        //Check if deletedTodo is not Null
+        if (deletedTodo) {
+            res.json({ message: 'Todo Deleted Successfully', todo: deletedTodo });
+        } else {
+            res.status(404).json({ message: 'Todo Not Found' });
+        }
+    } catch (err) {
+        res.status(404).json({ message: 'Unable To Delete Todo' });
+    };
+});
 
 module.exports = router;
