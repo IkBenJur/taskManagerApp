@@ -22,13 +22,21 @@ router.get('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    try {   
-        console.log('Request Body:', req.body);
+    try {
         const createdTodo = await Todo.create(req.body);
         res.json({ message: 'Todo Created Succesfully', todo: createdTodo });
     } catch (err) {
         res.status(400).json({ error: 'Unable To Add This Todo' });
     }
 });
+
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedTodo = await Todo.findByIdAndUpdate(req.params.id, req.body);
+        res.json({ message: 'Todo Updated Succesfully', todo: updatedTodo });
+    } catch (err) {
+        res.status(400).json({ message: 'Unable To Update Todo' });
+    }
+})
 
 module.exports = router;
