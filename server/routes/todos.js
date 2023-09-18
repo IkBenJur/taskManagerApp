@@ -21,6 +21,22 @@ router.get('/:id', async (req, res) => {
     };
 });
 
+
+router.get('/title/:title', async (req, res) => {
+    try {
+        const todo = await Todo.findOne({ title: req.params.title });
+
+        //Check if todo is null
+        if (todo) {
+            res.json(todo);
+        } else {
+            res.status(404).json({ notodofound: 'No Todo Found!'});
+        };
+    } catch (err) {
+        res.status(404).json({ notodofound: 'No Todo Found!'});
+    };
+});
+
 router.post('/', async (req, res) => {
     try {
         const createdTodo = await Todo.create(req.body);
