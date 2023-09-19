@@ -40,7 +40,26 @@ export default function CreateTodo() {
 
     return (
         <div>
-            Hello Create
+            <h1>Create new Todo</h1>
+            <form onSubmit={onSubmit}>
+                <label htmlFor="title">Title</label>
+                <input 
+                    type="text"
+                    id="title"
+                    value={todoForm.title}
+                    onChange={(e) => updateTodoForm({ title: e.target.value })}
+                />
+                <label htmlFor="description">Description</label>
+                <textarea
+                    id="description"
+                    value={todoForm.description}
+                    onChange={(e) => updateTodoForm({ description: e.target.value })}
+                />
+                <input 
+                    type="submit"
+                    value="Create Todo"
+                />
+            </form>
         </div>
     )
 }
