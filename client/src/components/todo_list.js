@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link } from "react-router-dom";
+
+const Todo = (props) => (
+    <li>
+        <h2>{props.todo.title}</h2>
+        <p>{props.todo.description}</p>
+        <Link to={`/edit/${props.todo._id}`}>Edit</Link>
+        <button onClick={ () => props.deleteTodo(props.todo._id)}>Delete</button>
+    </li>
+)
 
 export default function ShowTodos() {
     const [ todos, setTodos ] = useState([]);
@@ -23,10 +32,22 @@ export default function ShowTodos() {
         return;
     }, [todos.length]);
 
+    async function deleteTodo(id) {
+        await fetch(`http://localhost:5000/todos/${id}`, {
+            method: 'DELETE'
+        });
+
+        const newTodos = todos.filter(el => el._id !== id);
+        setTodos(newTodos);
+    };
+
     function todoList() {
         return todos.map((todo) => {
             return (
-                <li key={todo._id}>{todo.title}</li>
+                <Todo 
+                    todo={todo}
+                    deleteTodo={() => deleteTodo(todo._id)}
+                />
             )
         })
     }
