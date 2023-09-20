@@ -6,6 +6,7 @@ const Todo = (props) => (
         <h2>{props.todo.title}</h2>
         <p>{props.todo.description}</p>
         <Link to={`/edit/${props.todo._id}`}>Edit</Link>
+        <button onClick={ () => props.completeTodo(props.todo._id)}>Complete</button>
         <button onClick={ () => props.deleteTodo(props.todo._id)}>Delete</button>
     </li>
 )
@@ -41,6 +42,30 @@ export default function ShowTodos() {
         setTodos(newTodos);
     };
 
+    async function completeTodo(id) {
+        await fetch(`http://localhost:5000/todos/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                is_completed: true
+            })
+        });
+
+        const newTodos = todos.map(todo => {
+            if (todo._id === id ){
+                return {
+                    ...todo,
+                    is_completed: true
+                };
+            };
+            return todo;
+        });
+
+        setTodos(newTodos)
+    };
+
     function todoList() {
         return todos.map((todo) => {
             return (
@@ -48,6 +73,7 @@ export default function ShowTodos() {
                     key = {todo._id}
                     todo={todo}
                     deleteTodo={() => deleteTodo(todo._id)}
+                    completeTodo={() => completeTodo(todo._id)}
                 />
             )
         })
