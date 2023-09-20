@@ -3,11 +3,15 @@ import { Link } from "react-router-dom";
 
 const Todo = (props) => (
     <li>
-        <h2>{props.todo.title}</h2>
-        <p>{props.todo.description}</p>
-        <Link to={`/edit/${props.todo._id}`}>Edit</Link>
-        <button onClick={ () => props.completeTodo(props.todo._id)}>Complete</button>
-        <button onClick={ () => props.deleteTodo(props.todo._id)}>Delete</button>
+        <div style={props.todo.is_completed ? {"text-decoration": "line-through"} : null}> 
+            <h2>{props.todo.title}</h2>
+            <p>{props.todo.description}</p>
+        </div>
+        <div>    
+            <Link to={`/edit/${props.todo._id}`}>Edit</Link>
+            <button onClick={ () => props.completeTodo(props.todo._id)}>Complete</button>
+            <button onClick={ () => props.deleteTodo(props.todo._id, props.todo.is_completed)}>Delete</button>
+        </div>
     </li>
 )
 
@@ -42,14 +46,14 @@ export default function ShowTodos() {
         setTodos(newTodos);
     };
 
-    async function completeTodo(id) {
+    async function completeTodo(id, current_value) {
         await fetch(`http://localhost:5000/todos/${id}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                is_completed: true
+                is_completed: !current_value
             })
         });
 
@@ -57,7 +61,7 @@ export default function ShowTodos() {
             if (todo._id === id ){
                 return {
                     ...todo,
-                    is_completed: true
+                    is_completed: !current_value
                 };
             };
             return todo;
@@ -73,7 +77,7 @@ export default function ShowTodos() {
                     key = {todo._id}
                     todo={todo}
                     deleteTodo={() => deleteTodo(todo._id)}
-                    completeTodo={() => completeTodo(todo._id)}
+                    completeTodo={() => completeTodo(todo._id, todo.is_completed)}
                 />
             )
         })
