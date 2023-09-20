@@ -55,6 +55,7 @@ export default function ShowTodos() {
 
     return (
         <div>
+            <Link to={`/create`}>Create New Todo</Link>
             <ul>
                 {todoList()}
             </ul>

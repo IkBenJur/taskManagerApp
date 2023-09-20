@@ -9,9 +9,9 @@ import EditTodo from "./components/edit_todo";
 const App = () => {
  return (
    <div>
-    <CreateTodo />
-    <ShowTodos />
     <Routes>
+      <Route path="/" element={<ShowTodos />} />
+      <Route path="/create" element={<CreateTodo />} />
       <Route path="/edit/:id" element={<EditTodo />} />
     </Routes>
    </div>
