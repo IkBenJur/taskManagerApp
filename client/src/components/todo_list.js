@@ -45,6 +45,7 @@ export default function ShowTodos() {
         return todos.map((todo) => {
             return (
                 <Todo 
+                    key = {todo._id}
                     todo={todo}
                     deleteTodo={() => deleteTodo(todo._id)}
                 />
